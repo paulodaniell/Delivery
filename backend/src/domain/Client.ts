@@ -1,15 +1,17 @@
 import {User} from "./User";
+import { INotifiable } from "./interfaces/INotifiable";
 
-export class Client extends User{
+export class Client extends User implements INotifiable {
     constructor(
         id: number,
         name: string,
         cpf: string,
         email: string,
         password: string,
+        contactPhone: string,
         private _endereco: string
     ){
-        super(id,name,cpf,email,password);
+        super(id,name,cpf,email,password,contactPhone);
     }
 
     public get endereco(): string{
@@ -31,5 +33,12 @@ export class Client extends User{
         return `Cliente: ${this.name} - ${this.email}`;
     }
 
+    enviarNotificacao(mensagem: string): void {
+        console.log(`[Notificação Cliente ${this.name}]: ${mensagem}`)
+    }
+
+    getContatoPrincipal(): string {
+        return this.contactPhone;
+    }
 
 }

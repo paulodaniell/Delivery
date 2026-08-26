@@ -1,4 +1,6 @@
-export class Restaurant {
+import { INotifiable } from "./interfaces/INotifiable";
+
+export class Restaurant implements INotifiable{
     constructor(
         private readonly _id: number,
         private _name: string,
@@ -20,6 +22,7 @@ export class Restaurant {
         throw new Error("CNPJ inválido (deve conter 14 dígitos).");
         }
     }
+
 
     
     public get id(): number { return this._id; }
@@ -47,5 +50,13 @@ export class Restaurant {
     public getDetails(): string {
         const status = this._isOpen ? "Aberto" : "Fechado";
         return `${this._name} (${this._category}) - Status: ${status} | Endereço: ${this._address} | Contato: ${this._contactPhone}`;
-  }
+    }
+
+    enviarNotificacao(mensagem: string): void {
+        console.log(`[Notificação Restaurante ${this._name}]: ${mensagem}`);
+    }
+
+    getContatoPrincipal(): string {
+        return this._contactPhone;
+    }
 }
