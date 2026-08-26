@@ -26,6 +26,7 @@ Aplicação full stack de delivery de comida desenvolvida para simular as regras
 ├── backend/
 │   ├── src/
 │   │   ├── domain/        # Entidades e regras de negócio
+|   |   |      └── interfaces/ # Subpasta para os contratos (interfaces)
 │   │   └── index.ts       # Ponto de entrada do backend
 │   ├── package.json
 │   └── tsconfig.json
