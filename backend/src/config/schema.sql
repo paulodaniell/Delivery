@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     cpf VARCHAR(14) NOT NULL UNIQUE,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    contact_phone VARCHAR(20) NOT NULL, -- Adicionado para bater com o construtor base!
+    contact_phone VARCHAR(20) NOT NULL, 
     user_type ENUM('CLIENT', 'COURIER') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -24,13 +24,13 @@ CREATE TABLE IF NOT EXISTS clients (
 -- 3. Tabela de Entregadores (Herança de User)
 CREATE TABLE IF NOT EXISTS couriers (
     user_id INT PRIMARY KEY,
-    vehicle_plate VARCHAR(20) NOT NULL, -- Adicionado para bater com o construtor do Courier!
+    vehicle_plate VARCHAR(20) NOT NULL, 
     vehicle_type ENUM('MOTO', 'CAR', 'BICYCLE') NOT NULL,
     is_available BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 4. Tabela de Restaurantes (Mantida igual, já está ótima)
+-- 4. Tabela de Restaurantes 
 CREATE TABLE IF NOT EXISTS restaurants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
