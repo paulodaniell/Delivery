@@ -1,4 +1,3 @@
-// src/controllers/UserController.ts
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { MySQLUserRepository } from '../repositories/MySQLUserRepository'; // ou injetar via serviço
