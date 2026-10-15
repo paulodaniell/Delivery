@@ -16,9 +16,14 @@ export abstract class User implements IAuthenticable {
     public get name(): string{
         return this._name;
     }
+    public get cpf(): string { return this._cpf; }
+
     public get email(): string{
         return this._email;
     }
+
+    public get password(): string { return this._password; }
+    
     public get contactPhone(): string{
         return this._contactPhone;
     }

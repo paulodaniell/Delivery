@@ -14,7 +14,7 @@ export class Client extends User implements INotifiable {
         super(id,name,cpf,email,password,contactPhone);
     }
 
-    public get endereco(): string{
+    public get address(): string {
         return this._endereco;
     }
 
