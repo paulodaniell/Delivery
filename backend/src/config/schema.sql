@@ -2,13 +2,14 @@
 CREATE DATABASE IF NOT EXISTS delivery_db;
 USE delivery_db;
 
--- 1. Tabela Base de Usuários (Mapeia a classe abstrata User)
+-- 1. Tabela Base de Usuários (Mapeia a classe User)
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    contact_phone VARCHAR(20) NOT NULL, -- Adicionado para bater com o construtor base!
     user_type ENUM('CLIENT', 'COURIER') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -23,12 +24,13 @@ CREATE TABLE IF NOT EXISTS clients (
 -- 3. Tabela de Entregadores (Herança de User)
 CREATE TABLE IF NOT EXISTS couriers (
     user_id INT PRIMARY KEY,
+    vehicle_plate VARCHAR(20) NOT NULL, -- Adicionado para bater com o construtor do Courier!
     vehicle_type ENUM('MOTO', 'CAR', 'BICYCLE') NOT NULL,
     is_available BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 4. Tabela de Restaurantes
+-- 4. Tabela de Restaurantes (Mantida igual, já está ótima)
 CREATE TABLE IF NOT EXISTS restaurants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -45,7 +47,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5. Tabela de Produtos (Mapeia Product, Food e Drink via Single Table Inheritance)
+-- 5. Tabela de Produtos
 CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     restaurant_id INT NOT NULL,
@@ -54,17 +56,15 @@ CREATE TABLE IF NOT EXISTS products (
     price DECIMAL(10, 2) NOT NULL,
     available BOOLEAN DEFAULT TRUE,
     product_type ENUM('FOOD', 'DRINK') NOT NULL,
-    -- Atributos específicos de Food
     prep_time_minutes INT NULL,
     packaging_fee DECIMAL(10, 2) NULL,
-    -- Atributos específicos de Drink
     volume_ml INT NULL,
     is_alcoholic BOOLEAN NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
 
--- 6. Tabela de Pedidos (Raiz de Agregação de Order / Cart)
+-- 6. Tabela de Pedidos
 CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     client_id INT NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS orders (
     FOREIGN KEY (courier_id) REFERENCES users(id)
 );
 
--- 7. Itens do Pedido (Mapeia OrderItem)
+-- 7. Itens do Pedido
 CREATE TABLE IF NOT EXISTS order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- 8. Pagamentos (Mapeia Payment e subclasses: PixPayment, CardPayment, CashPayment)
+-- 8. Pagamentos
 CREATE TABLE IF NOT EXISTS payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL UNIQUE,
