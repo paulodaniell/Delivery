@@ -1,4 +1,3 @@
-// src/services/ProductService.ts
 import { Product } from '../domain/Product';
 import { Food } from '../domain/Food';
 import { Drink } from '../domain/Drink';
@@ -74,5 +73,32 @@ export class ProductService {
       throw new Error('Produto não encontrado.');
     }
     return product;
+  }
+
+  public async updateProduct(id: number, productData: {
+    name?: string;
+    description?: string;
+    available?: boolean;
+    price?: number;
+  }): Promise<void> {
+    const existingProduct = await this.productRepository.findById(id);
+    if (!existingProduct) {
+      throw new Error('Produto não encontrado.');
+    }
+
+    
+    const updatedName = productData.name ?? existingProduct.name;
+    const updatedDescription = productData.description ?? existingProduct.description;
+    const updatedAvailable = productData.available ?? existingProduct.available;
+    const updatedPrice = productData.price ?? existingProduct.price;
+
+    if (updatedPrice <= 0) {
+      throw new Error('O preço do produto deve ser maior que zero.');
+    }
+
+
+    existingProduct.name = updatedName; 
+    
+    await this.productRepository.update(id, existingProduct);
   }
 }
